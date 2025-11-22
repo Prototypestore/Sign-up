@@ -1,0 +1,102 @@
+let leftEye = document.getElementById('leftEye');
+let rightEye = document.getElementById('rightEye');
+const leftEarOuter = document.getElementById('leftEarOuter');
+const rightEarOuter = document.getElementById('rightEarOuter');
+const loginForm = document.querySelector('form');
+const face = document.querySelector('svg');
+
+// Helper: move eyes toward a target element
+function lookAt(element) {
+  const rect = element.getBoundingClientRect();
+  const targetX = rect.left + rect.width / 2;
+  const targetY = rect.top + rect.height / 2;
+
+  const faceRect = face.getBoundingClientRect();
+  const faceCenterX = faceRect.left + faceRect.width / 2;
+  const faceCenterY = faceRect.top + faceRect.height / 2;
+
+  const dx = (targetX - faceCenterX) / 40;
+  const dy = (targetY - faceCenterY) / 40;
+
+  leftEye.setAttribute('cx', 80 + dx);
+  leftEye.setAttribute('cy', 90 + dy);
+  rightEye.setAttribute('cx', 120 + dx);
+  rightEye.setAttribute('cy', 90 + dy);
+
+  wiggleEars();
+}
+
+// Reset eyes to neutral
+function resetEyes() {
+  leftEye.setAttribute('cx', 80);
+  leftEye.setAttribute('cy', 90);
+  rightEye.setAttribute('cx', 120);
+  rightEye.setAttribute('cy', 90);
+}
+
+// Wiggle ears briefly
+function wiggleEars() {
+  leftEarOuter.classList.add('wiggle');
+  rightEarOuter.classList.add('wiggle');
+  setTimeout(() => {
+    leftEarOuter.classList.remove('wiggle');
+    rightEarOuter.classList.remove('wiggle');
+  }, 500);
+}
+
+// Bounce animation for hearts
+function bounceHearts() {
+  leftEye.classList.add('bounce');
+  rightEye.classList.add('bounce');
+  setTimeout(() => {
+    leftEye.classList.remove('bounce');
+    rightEye.classList.remove('bounce');
+  }, 600);
+}
+
+// Desktop-only mouse tracking
+const isDesktop = window.matchMedia("(min-width: 768px)").matches;
+if (isDesktop) {
+  document.addEventListener('mousemove', (e) => {
+    const rect = face.getBoundingClientRect();
+    const faceCenterX = rect.left + rect.width / 2;
+    const faceCenterY = rect.top + rect.height / 2;
+
+    const dx = (e.clientX - faceCenterX) / 40;
+    const dy = (e.clientY - faceCenterY) / 40;
+
+    const formRect = loginForm.getBoundingClientRect();
+    const distanceX = Math.abs(e.clientX - (formRect.left + formRect.width / 2));
+    const distanceY = Math.abs(e.clientY - (formRect.top + formRect.height / 2));
+    const closeEnough = distanceX < formRect.width / 2 + 50 && distanceY < formRect.height / 2 + 50;
+
+    if (closeEnough) {
+      // Eyes become hearts
+      leftEye.outerHTML = '<text id="leftEye" class="eye" x="75" y="95" font-size="20">❤️</text>';
+      rightEye.outerHTML = '<text id="rightEye" class="eye" x="115" y="95" font-size="20">❤️</text>';
+      leftEye = document.getElementById('leftEye');
+      rightEye = document.getElementById('rightEye');
+
+      wiggleEars();
+      bounceHearts();
+    } else {
+      // Reset to black ellipses that follow cursor
+      leftEye.outerHTML = `<ellipse id="leftEye" class="eye" cx="${80 + dx}" cy="${90 + dy}" rx="10" ry="14" fill="black"/>`;
+      rightEye.outerHTML = `<ellipse id="rightEye" class="eye" cx="${120 + dx}" cy="${90 + dy}" rx="10" ry="14" fill="black"/>`;
+      leftEye = document.getElementById('leftEye');
+      rightEye = document.getElementById('rightEye');
+    }
+  });
+}
+
+// Focus listeners for each input section
+['username', 'email', 'password'].forEach(id => {
+  const input = document.getElementById(id);
+  input.addEventListener('focus', () => lookAt(input));
+  input.addEventListener('blur', resetEyes);
+});
+
+// Also track the login button
+const loginButton = document.getElementById('loginButton');
+loginButton.addEventListener('focus', () => lookAt(loginButton));
+loginButton.addEventListener('blur', resetEyes);
