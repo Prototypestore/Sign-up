@@ -5,33 +5,12 @@ const rightEarOuter = document.getElementById('rightEarOuter');
 const loginForm = document.querySelector('form');
 const face = document.querySelector('svg');
 
-// Helper: move eyes toward a target element
-function lookAt(element) {
-  const rect = element.getBoundingClientRect();
-  const targetX = rect.left + rect.width / 2;
-  const targetY = rect.top + rect.height / 2;
-
-  const faceRect = face.getBoundingClientRect();
-  const faceCenterX = faceRect.left + faceRect.width / 2;
-  const faceCenterY = faceRect.top + faceRect.height / 2;
-
-  const dx = (targetX - faceCenterX) / 40;
-  const dy = (targetY - faceCenterY) / 40;
-
-  leftEye.setAttribute('cx', 80 + dx);
-  leftEye.setAttribute('cy', 90 + dy);
-  rightEye.setAttribute('cx', 120 + dx);
-  rightEye.setAttribute('cy', 90 + dy);
-
-  wiggleEars();
-}
-
-// Reset eyes to neutral
+// Reset eyes to neutral black ellipses
 function resetEyes() {
-  leftEye.setAttribute('cx', 80);
-  leftEye.setAttribute('cy', 90);
-  rightEye.setAttribute('cx', 120);
-  rightEye.setAttribute('cy', 90);
+  leftEye.outerHTML = '<ellipse id="leftEye" class="eye" cx="80" cy="90" rx="10" ry="14" fill="black"/>';
+  rightEye.outerHTML = '<ellipse id="rightEye" class="eye" cx="120" cy="90" rx="10" ry="14" fill="black"/>';
+  leftEye = document.getElementById('leftEye');
+  rightEye = document.getElementById('rightEye');
 }
 
 // Wiggle ears briefly
@@ -54,6 +33,16 @@ function bounceHearts() {
   }, 600);
 }
 
+// Switch eyes to hearts + wiggle
+function activateHearts() {
+  leftEye.outerHTML = '<text id="leftEye" class="eye" x="75" y="95" font-size="20">❤️</text>';
+  rightEye.outerHTML = '<text id="rightEye" class="eye" x="115" y="95" font-size="20">❤️</text>';
+  leftEye = document.getElementById('leftEye');
+  rightEye = document.getElementById('rightEye');
+  wiggleEars();
+  bounceHearts();
+}
+
 // Desktop-only mouse tracking
 const isDesktop = window.matchMedia("(min-width: 768px)").matches;
 if (isDesktop) {
@@ -66,21 +55,19 @@ if (isDesktop) {
     const dy = (e.clientY - faceCenterY) / 40;
 
     const formRect = loginForm.getBoundingClientRect();
-    const distanceX = Math.abs(e.clientX - (formRect.left + formRect.width / 2));
-    const distanceY = Math.abs(e.clientY - (formRect.top + formRect.height / 2));
-    const closeEnough = distanceX < formRect.width / 2 + 50 && distanceY < formRect.height / 2 + 50;
+    const insideForm =
+      e.clientX >= formRect.left &&
+      e.clientX <= formRect.right &&
+      e.clientY >= formRect.top &&
+      e.clientY <= formRect.bottom;
 
-    if (closeEnough) {
-      // Eyes become hearts
-      leftEye.outerHTML = '<text id="leftEye" class="eye" x="75" y="95" font-size="20">❤️</text>';
-      rightEye.outerHTML = '<text id="rightEye" class="eye" x="115" y="95" font-size="20">❤️</text>';
-      leftEye = document.getElementById('leftEye');
-      rightEye = document.getElementById('rightEye');
-
-      wiggleEars();
-      bounceHearts();
+    if (insideForm) {
+      // Hearts + wiggle while cursor is inside form
+      if (leftEye.tagName.toLowerCase() !== 'text') {
+        activateHearts();
+      }
     } else {
-      // Reset to black ellipses that follow cursor
+      // Eyes track cursor normally outside form
       leftEye.outerHTML = `<ellipse id="leftEye" class="eye" cx="${80 + dx}" cy="${90 + dy}" rx="10" ry="14" fill="black"/>`;
       rightEye.outerHTML = `<ellipse id="rightEye" class="eye" cx="${120 + dx}" cy="${90 + dy}" rx="10" ry="14" fill="black"/>`;
       leftEye = document.getElementById('leftEye');
@@ -92,9 +79,14 @@ if (isDesktop) {
 // Focus listeners for each input section
 ['username', 'email', 'password'].forEach(id => {
   const input = document.getElementById(id);
-  input.addEventListener('focus', () => lookAt(input));
+  input.addEventListener('focus', activateHearts);
   input.addEventListener('blur', resetEyes);
 });
+
+// Also track the login button
+const loginButton = document.getElementById('loginButton');
+loginButton.addEventListener('focus', activateHearts);
+loginButton.addEventListener('blur', resetEyes);
 
 // Also track the login button
 const loginButton = document.getElementById('loginButton');
