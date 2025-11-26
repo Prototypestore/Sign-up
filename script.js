@@ -1,3 +1,4 @@
+console.log("JS LOADED");
 let leftEye = document.getElementById('leftEye');
 let rightEye = document.getElementById('rightEye');
 const leftEarOuter = document.getElementById('leftEarOuter');
