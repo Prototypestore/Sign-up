@@ -252,3 +252,7 @@ svg {
     animation: bounce 1s ease-in-out;
   }
 }
+  .bounce {
+    animation: bounce 1s ease-in-out;
+  }
+}
