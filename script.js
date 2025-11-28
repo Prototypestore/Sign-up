@@ -157,51 +157,74 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('Interaction script initialized.');
 });
 
-// Detect desktop vs mobile
-const mq = window.matchMedia('(min-width: 768px)');
-function isDesktop() { return mq.matches; }
-
-// --- Desktop cursor tracking ---
-function handleMouseMove(e) {
-  if (!isDesktop()) return;   // <-- prevents firing in mobile mode
-  if (heartsActive) return;   // don't overwrite hearts
-
-  const rect = face.getBoundingClientRect();
-  const faceCenterX = rect.left + rect.width / 2;
-  const faceCenterY = rect.top + rect.height / 2;
-
-  const dx = (e.clientX - faceCenterX) / 40;
-  const dy = (e.clientY - faceCenterY) / 40;
-
-  const left = createEllipseEye('leftEye', forwardLX + dx, forwardLY + dy);
-  const right = createEllipseEye('rightEye', forwardRX + dx, forwardRY + dy);
-  replaceEye('left', left);
-  replaceEye('right', right);
-
-  const formRect = loginForm.getBoundingClientRect();
-  const insideForm =
-    e.clientX >= formRect.left &&
-    e.clientX <= formRect.right &&
-    e.clientY >= formRect.top &&
-    e.clientY <= formRect.bottom;
-
-  if (insideForm && !heartsActive) {
-    activateHeartsDesktop();
-  }
-}
-document.addEventListener('mousemove', handleMouseMove);
-
-// --- Mobile focus-based hearts ---
-if (!isDesktop()) {
-  loginForm.addEventListener('focusin', () => {
-    const left = createHeartEye('leftEye', forwardLX, forwardLY);
-    const right = createHeartEye('rightEye', forwardRX, forwardRY);
+// Mobile hearts (forward gaze on focus)
+  function activateHeartsMobile() {
+    const left = createHeartEye('leftEye', forwardLX - 5, forwardLY + 5);
+    const right = createHeartEye('rightEye', forwardRX - 5, forwardRY + 5);
     replaceEye('left', left);
     replaceEye('right', right);
     heartsActive = true;
     wiggleEars();
     bounceHearts();
+  }
+
+  // Initialize neutral eyes if missing
+  if (!leftEye || !rightEye) resetEyesForward();
+
+  // Responsive detection
+  const mq = window.matchMedia('(min-width: 768px)');
+  const isDesktop = () => mq.matches;
+
+  // Desktop: cursor tracking + hearts when mouse enters form
+  function handleMouseMove(e) {
+    if (!isDesktop()) return;       // disable in mobile mode
+    if (heartsActive) return;       // don't overwrite hearts
+    if (!leftEye || !rightEye) return;
+
+    const rect = face.getBoundingClientRect();
+    const faceCenterX = rect.left + rect.width / 2;
+    const faceCenterY = rect.top + rect.height / 2;
+
+    const dx = (e.clientX - faceCenterX) / 40;
+    const dy = (e.clientY - faceCenterY) / 40;
+
+    const left = createEllipseEye('leftEye', forwardLX + dx, forwardLY + dy);
+    const right = createEllipseEye('rightEye', forwardRX + dx, forwardRY + dy);
+    replaceEye('left', left);
+    replaceEye('right', right);
+
+    const formRect = loginForm.getBoundingClientRect();
+    const insideForm =
+      e.clientX >= formRect.left &&
+      e.clientX <= formRect.right &&
+      e.clientY >= formRect.top &&
+      e.clientY <= formRect.bottom;
+
+    if (insideForm && !heartsActive) {
+      activateHeartsDesktop();
+    }
+  }
+  document.addEventListener('mousemove', handleMouseMove);
+
+  // Mobile: focus-based hearts; forward gaze locked
+  function attachMobileFocus() {
+    if (isDesktop()) return;
+
+    // Use form-level focusin/focusout to catch all inputs/buttons
+    loginForm.addEventListener('focusin', activateHeartsMobile);
+    loginForm.addEventListener('focusout', resetEyesForward);
+
+    // Extra safety for tap/click
+    loginForm.addEventListener('click', activateHeartsMobile, { once: true });
+    loginForm.addEventListener('touchstart', activateHeartsMobile, { passive: true, once: true });
+  }
+  attachMobileFocus();
+
+  // Re-bind when breakpoint changes (e.g., DevTools toggling device mode)
+  mq.addEventListener('change', () => {
+    resetEyesForward();
+    attachMobileFocus();
   });
 
-  loginForm.addEventListener('focusout', resetEyesForward);
-}
+  console.log('Interaction script initialized.');
+});
