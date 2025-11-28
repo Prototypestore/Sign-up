@@ -1,5 +1,4 @@
 console.log("JS LOADED");
-
 document.addEventListener('DOMContentLoaded', () => {
   // Cache essential nodes
   const face = document.querySelector('svg');
