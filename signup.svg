@@ -1,0 +1,37 @@
+<svg aria-hidden="true" width="200" height="200" viewBox="0 0 200 200">
+        <defs>
+          <linearGradient id="bodyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color:#7cedfc;stop-opacity:1"/>
+            <stop offset="35%" style="stop-color:#8000ff;stop-opacity:1"/>
+            <stop offset="100%" style="stop-color:#faa4ff;stop-opacity:1"/>
+          </linearGradient>
+          <linearGradient id="earGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color:#7cedfc;stop-opacity:0.8"/>
+            <stop offset="35%" style="stop-color:#7cedfc;stop-opacity:0.8"/>
+            <stop offset="100%" style="stop-color:#8000ff;stop-opacity:0.8"/>
+          </linearGradient>
+        </defs>
+        <!-- Body -->
+        <ellipse cx="100" cy="105" rx="75" ry="60" fill="url(#bodyGradient)"/>
+        <!-- Ears -->
+        <path id="leftEarOuter" class="ear" d="M50 70 Q40 40 70 35 Q90 40 80 70 Q65 80 50 70" fill="url(#earGradient)"/>
+        <path id="leftEarInner" class="ear" d="M58 65 Q50 50 68 47 Q78 52 72 65 Q65 70 58 65" fill="url(#earGradient)"/>
+        <path id="rightEarOuter" class="ear" d="M150 70 Q160 40 130 35 Q110 40 120 70 Q135 80 150 70" fill="url(#earGradient)"/>
+        <path id="rightEarInner" class="ear" d="M142 65 Q150 50 132 47 Q122 52 128 65 Q135 70 142 65" fill="url(#earGradient)"/>
+        <!-- Mouth -->
+        <text x="90" y="130" font-size="25" fill="white" transform="rotate(0 100 123)">⩊</text>
+        <text x="97" y="126" font-size="9" fill="white" transform="rotate(0 100 123)">❤</text>
+        <!-- Eyes -->
+        <ellipse cx="80" cy="90" rx="12" ry="18" fill="white"/>
+        <ellipse id="leftEye" class="eye" cx="80" cy="90" rx="10" ry="14" fill="black"/>
+        <ellipse cx="77" cy="80" rx="6" ry="6" fill="white"/>
+        <ellipse cx="83" cy="100" rx="6" ry="6" fill="white"/>
+        <ellipse cx="120" cy="90" rx="12" ry="18" fill="white"/>
+        <ellipse id="rightEye" class="eye" cx="120" cy="90" rx="10" ry="14" fill="black"/>
+        <ellipse cx="117" cy="80" rx="6" ry="6" fill="white"/>
+        <ellipse cx="123" cy="100" rx="6" ry="6" fill="white"/>
+        <!-- Eyebrows -->
+        <ellipse cx="75" cy="63" rx="7" ry="5" fill="#412a2d" opacity="1"/>
+        <ellipse cx="125" cy="63" rx="7" ry="5" fill="#412a2d" opacity="1"/>
+      </svg>
+    </div>
