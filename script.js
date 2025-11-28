@@ -157,34 +157,46 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('Interaction script initialized.');
 });
 
-// mobile-layout.js
-// Select elements
-const form = document.querySelector('form');
-const leftEye = document.getElementById('leftEye');
-const rightEye = document.getElementById('rightEye');
-const ears = document.querySelectorAll('.ear');
+// Detect mobile (viewport < 768px)
+const isMobile = window.matchMedia('(max-width: 767px)').matches;
 
-// Function to trigger hearts + wiggle + forward gaze
-function activateMobileAnimation() {
-  // Eyes look forward (centered position)
-  leftEye.setAttribute('cx', '50');  // adjust to your SVG center
-  rightEye.setAttribute('cx', '150'); // adjust to your SVG center
+// Mobile-specific activateHearts
+function activateMobileHearts() {
+  // Eyes forward (fixed positions)
+  const left = createHeartEye(80, 90);   // forward position
+  left.setAttribute('id', 'leftEye');
+  const right = createHeartEye(120, 90); // forward position
+  right.setAttribute('id', 'rightEye');
 
-  // Eyes turn into hearts
-  leftEye.setAttribute('fill', 'red');
-  rightEye.setAttribute('fill', 'red');
+  replaceEye('left', left);
+  replaceEye('right', right);
 
-  // Wiggle ears
-  ears.forEach(ear => ear.classList.add('wiggle'));
+  wiggleEars();
+  bounceHearts();
 }
 
-// Reset (optional)
-function resetMobileAnimation() {
-  leftEye.setAttribute('fill', '#000');
-  rightEye.setAttribute('fill', '#000');
-  ears.forEach(ear => ear.classList.remove('wiggle'));
+// Reset for mobile
+function resetMobileEyes() {
+  const left = createEllipseEye(80, 90);
+  left.setAttribute('id', 'leftEye');
+  const right = createEllipseEye(120, 90);
+  right.setAttribute('id', 'rightEye');
+  replaceEye('left', left);
+  replaceEye('right', right);
 }
 
-// Mobile-specific trigger
-form.addEventListener('focusin', activateMobileAnimation);
-form.addEventListener('focusout', resetMobileAnimation);
+// Apply listeners differently for mobile vs desktop
+if (isMobile) {
+  ['username', 'email', 'password'].forEach((id) => {
+    const input = document.getElementById(id);
+    if (!input) return;
+    input.addEventListener('focus', activateMobileHearts);
+    input.addEventListener('blur', resetMobileEyes);
+  });
+
+  const loginButton = document.getElementById('loginButton');
+  if (loginButton) {
+    loginButton.addEventListener('focus', activateMobileHearts);
+    loginButton.addEventListener('blur', resetMobileEyes);
+  }
+}
