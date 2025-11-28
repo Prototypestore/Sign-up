@@ -132,17 +132,108 @@ input {
   to   { transform: rotate(10deg); }
 }
 
+  .bounce {
+    animation: bounce 1s ease-in-out;
+  }
+
 /* =========================
    MOBILE LAYOUT (default for ALL screens)
-   This is the baseline that applies everywhere
    ========================= */
+body {
+  background: url('https://static.vecteezy.com/system/resources/previews/042/703/456/non_2x/abstract-technology-particles-lines-background-free-vector.jpg')
+              no-repeat center center fixed;
+  background-size: cover;
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+}
+
+/* Overlay for readability */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55); /* dark overlay */
+  z-index: -1;
+}
+
+.container {
+  flex-direction: column;   /* stack hero + form vertically */
+  gap: 30px;
+  padding: 20px;
+  height: auto;             /* let content flow naturally */
+}
+
+.hero {
+  text-align: center;
+  color: white;
+  margin: 10px 0;
+}
+
 svg {
-  width: 200px;
+  width: 180px;
   height: auto;
   display: block;
   margin: 0 auto;
 }
 
+form {
+  width: 90%;
+  max-width: 360px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.08); /* subtle card */
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #444;
+  border-radius: 6px;
+  background-color: #ffffff; /* white box */
+  color: #000000;            /* black text */
+}
+
+.form-group input:focus {
+  border-color: #007FFF;
+  box-shadow: 0 0 6px rgba(0,127,255,0.4);
+  outline: none;
+}
+
+#loginButton {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #007FFF, #005FCC);
+  color: #fff;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+#loginButton:hover {
+  transform: scale(1.05);
+}
+
+/* Mobile animations */
 .eye {
   transition: transform 0.3s ease, fill 0.3s ease;
 }
@@ -169,15 +260,17 @@ svg {
   0%, 100% { transform: translateY(0); }
   50%      { transform: translateY(-8px); }
 }
-/* =========================
-   END MOBILE LAYOUT (applies everywhere)
-   ========================= */
-
 
 /* =========================
    Tablet screens (≥ 600px)
    ========================= */
 @media only screen and (min-width: 600px) {
+  .container {
+    flex-direction: row;   /* side-by-side layout starts here */
+    gap: 40px;
+    padding: 30px;
+  }
+
   svg {
     width: 250px;
   }
@@ -190,12 +283,21 @@ svg {
     rx: 11;
     ry: 15;
   }
+
+  form {
+    max-width: 400px;
+    padding: 25px;
+  }
 }
 
 /* =========================
    Desktop screens (≥ 768px)
    ========================= */
 @media only screen and (min-width: 768px) {
+  .container {
+    gap: 60px;
+  }
+
   svg {
     width: 300px;
   }
@@ -216,12 +318,21 @@ svg {
   .bounce {
     animation: bounce 0.8s ease-in-out;
   }
+
+  form {
+    max-width: 450px;
+    padding: 30px;
+  }
 }
 
 /* =========================
    Large screens (≥ 1200px)
    ========================= */
 @media only screen and (min-width: 1200px) {
+  .container {
+    gap: 80px;
+  }
+
   svg {
     width: 400px;
   }
@@ -242,7 +353,9 @@ svg {
   .bounce {
     animation: bounce 1s ease-in-out;
   }
-}
-  .bounce {
-    animation: bounce 1s ease-in-out;
+
+  form {
+    max-width: 500px;
+    padding: 40px;
   }
+}
