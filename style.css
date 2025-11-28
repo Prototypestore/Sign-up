@@ -35,7 +35,7 @@ body {
 .form-group label {
   font-size: 14px;
   font-weight: 600;
-  color: #ffffff;
+  color: white;
   margin-bottom: 6px; /* spacing between label and input */
   position: static;   /* remove absolute positioning */
   opacity: 1;         /* full visibility */
