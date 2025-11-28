@@ -157,46 +157,51 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('Interaction script initialized.');
 });
 
-// Detect mobile (viewport < 768px)
-const isMobile = window.matchMedia('(max-width: 767px)').matches;
+// Detect desktop vs mobile
+const mq = window.matchMedia('(min-width: 768px)');
+function isDesktop() { return mq.matches; }
 
-// Mobile-specific activateHearts
-function activateMobileHearts() {
-  // Eyes forward (fixed positions)
-  const left = createHeartEye(80, 90);   // forward position
-  left.setAttribute('id', 'leftEye');
-  const right = createHeartEye(120, 90); // forward position
-  right.setAttribute('id', 'rightEye');
+// --- Desktop cursor tracking ---
+function handleMouseMove(e) {
+  if (!isDesktop()) return;   // <-- prevents firing in mobile mode
+  if (heartsActive) return;   // don't overwrite hearts
 
+  const rect = face.getBoundingClientRect();
+  const faceCenterX = rect.left + rect.width / 2;
+  const faceCenterY = rect.top + rect.height / 2;
+
+  const dx = (e.clientX - faceCenterX) / 40;
+  const dy = (e.clientY - faceCenterY) / 40;
+
+  const left = createEllipseEye('leftEye', forwardLX + dx, forwardLY + dy);
+  const right = createEllipseEye('rightEye', forwardRX + dx, forwardRY + dy);
   replaceEye('left', left);
   replaceEye('right', right);
 
-  wiggleEars();
-  bounceHearts();
-}
+  const formRect = loginForm.getBoundingClientRect();
+  const insideForm =
+    e.clientX >= formRect.left &&
+    e.clientX <= formRect.right &&
+    e.clientY >= formRect.top &&
+    e.clientY <= formRect.bottom;
 
-// Reset for mobile
-function resetMobileEyes() {
-  const left = createEllipseEye(80, 90);
-  left.setAttribute('id', 'leftEye');
-  const right = createEllipseEye(120, 90);
-  right.setAttribute('id', 'rightEye');
-  replaceEye('left', left);
-  replaceEye('right', right);
+  if (insideForm && !heartsActive) {
+    activateHeartsDesktop();
+  }
 }
+document.addEventListener('mousemove', handleMouseMove);
 
-// Apply listeners differently for mobile vs desktop
-if (isMobile) {
-  ['username', 'email', 'password'].forEach((id) => {
-    const input = document.getElementById(id);
-    if (!input) return;
-    input.addEventListener('focus', activateMobileHearts);
-    input.addEventListener('blur', resetMobileEyes);
+// --- Mobile focus-based hearts ---
+if (!isDesktop()) {
+  loginForm.addEventListener('focusin', () => {
+    const left = createHeartEye('leftEye', forwardLX, forwardLY);
+    const right = createHeartEye('rightEye', forwardRX, forwardRY);
+    replaceEye('left', left);
+    replaceEye('right', right);
+    heartsActive = true;
+    wiggleEars();
+    bounceHearts();
   });
 
-  const loginButton = document.getElementById('loginButton');
-  if (loginButton) {
-    loginButton.addEventListener('focus', activateMobileHearts);
-    loginButton.addEventListener('blur', resetMobileEyes);
-  }
+  loginForm.addEventListener('focusout', resetEyesForward);
 }
