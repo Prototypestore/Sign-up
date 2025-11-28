@@ -159,7 +159,7 @@ body::before {
 .container {
   flex-direction: column;   /* stack hero + form vertically */
   gap: 30px;
-  padding: 20px;
+  padding: 25px;
   height: auto;             /* let content flow naturally */
 }
 
