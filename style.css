@@ -25,21 +25,20 @@ body {
   gap: 20px;
 }
 
-form {
+.form-group {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  align-items: center;
-  padding: 0px;
-  border: none;
-  border-radius: 8px;
-  background: none;
-  margin-top: 135px;
+  margin-bottom: 20px;
+  width: 100%;
 }
 
-.form-group {
-  position: relative;
-  margin-bottom: 20px;
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 6px; /* spacing between label and input */
+  position: static;   /* remove absolute positioning */
+  opacity: 1;         /* full visibility */
 }
 
 .form-group input {
@@ -48,28 +47,13 @@ form {
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 6px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.form-group label {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  font-size: 16px;
-  color: #666;
-  opacity: 0.6; /* low transparency */
-  pointer-events: none; /* don’t block clicks */
-  transition: 0.2s ease all;
-}
-
-/* When input is focused or has text, move label up */
-.form-group input:focus + label,
-.form-group input:not(:placeholder-shown) + label {
-  top: -8px;
-  left: 8px;
-  font-size: 12px;
-  opacity: 1;
-  background: #fff; /* optional: white background so it doesn’t overlap text */
-  padding: 0 4px;
+.form-group input:focus {
+  border-color: #007FFF;
+  box-shadow: 0 0 6px rgba(0,127,255,0.4);
+  outline: none;
 }
 
 #loginButton {
