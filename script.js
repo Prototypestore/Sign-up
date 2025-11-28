@@ -157,3 +157,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
   console.log('Interaction script initialized.');
 });
+
+// mobile-layout.js
+// Select elements
+const form = document.querySelector('form');
+const leftEye = document.getElementById('leftEye');
+const rightEye = document.getElementById('rightEye');
+const ears = document.querySelectorAll('.ear');
+
+// Function to trigger hearts + wiggle
+function activateMobileAnimation() {
+  // Eyes turn into hearts
+  leftEye.setAttribute('fill', 'red');
+  rightEye.setAttribute('fill', 'red');
+
+  // Add wiggle class to ears
+  ears.forEach(ear => ear.classList.add('wiggle'));
+}
+
+// Function to reset (optional)
+function resetMobileAnimation() {
+  leftEye.setAttribute('fill', '#000');   // back to normal
+  rightEye.setAttribute('fill', '#000');
+  ears.forEach(ear => ear.classList.remove('wiggle'));
+}
+
+// Mobile-specific trigger
+form.addEventListener('focusin', activateMobileAnimation);
+form.addEventListener('focusout', resetMobileAnimation);
