@@ -165,19 +165,23 @@ const leftEye = document.getElementById('leftEye');
 const rightEye = document.getElementById('rightEye');
 const ears = document.querySelectorAll('.ear');
 
-// Function to trigger hearts + wiggle
+// Function to trigger hearts + wiggle + forward gaze
 function activateMobileAnimation() {
+  // Eyes look forward (centered position)
+  leftEye.setAttribute('cx', '50');  // adjust to your SVG center
+  rightEye.setAttribute('cx', '150'); // adjust to your SVG center
+
   // Eyes turn into hearts
   leftEye.setAttribute('fill', 'red');
   rightEye.setAttribute('fill', 'red');
 
-  // Add wiggle class to ears
+  // Wiggle ears
   ears.forEach(ear => ear.classList.add('wiggle'));
 }
 
-// Function to reset (optional)
+// Reset (optional)
 function resetMobileAnimation() {
-  leftEye.setAttribute('fill', '#000');   // back to normal
+  leftEye.setAttribute('fill', '#000');
   rightEye.setAttribute('fill', '#000');
   ears.forEach(ear => ear.classList.remove('wiggle'));
 }
