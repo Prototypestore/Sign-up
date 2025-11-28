@@ -35,18 +35,20 @@ body {
 .form-group label {
   font-size: 14px;
   font-weight: 600;
-  color: white;
-  margin-bottom: 6px; /* spacing between label and input */
-  position: static;   /* remove absolute positioning */
-  opacity: 1;         /* full visibility */
+  color: #ffffff;   /* pure white for dark background */
+  margin-bottom: 6px;
+  position: static; /* sits above input */
+  opacity: 1;
 }
 
 .form-group input {
   width: 100%;
   padding: 12px;
   font-size: 16px;
-  border: 1px solid #ccc;
+  border: 1px solid #444;   /* darker border for contrast */
   border-radius: 6px;
+  background-color: #111;   /* dark input box */
+  color: #fff;              /* white text inside */
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
