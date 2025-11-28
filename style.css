@@ -47,7 +47,8 @@ body {
   font-size: 16px;
   border: 1px solid #444;   /* darker border for contrast */
   border-radius: 6px;
-  background-color: #ffffff;   /* dark input box */
+  background-color: #ffffff; /* white box */
+  color: #000000;            /* black text */
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
