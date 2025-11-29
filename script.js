@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     t.setAttribute('font-size', '20');
     t.setAttribute('x', x);
     t.setAttribute('y', y);
+    // keep emoji simple; some devices need a font — emoji usually works
     t.textContent = '❤️';
     return t;
   }
@@ -69,6 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Desktop logic
   const isDesktop = window.matchMedia('(min-width: 768px)').matches;
+  console.log('Desktop branch active:', isDesktop);
   if (isDesktop) {
     document.addEventListener('mousemove', (e) => {
       leftEye = document.getElementById('leftEye');
@@ -97,8 +99,10 @@ document.addEventListener('DOMContentLoaded', () => {
           face.querySelector('#rightEye')?.replaceWith(right);
           leftEye = left;
           rightEye = right;
+
           leftEarOuter.classList.add('wiggle');
           rightEarOuter.classList.add('wiggle');
+
           setTimeout(() => {
             leftEarOuter.classList.remove('wiggle');
             rightEarOuter.classList.remove('wiggle');
@@ -114,11 +118,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Mobile logic
   const isMobile = window.matchMedia('(max-width: 767px)').matches;
-if (isMobile) {
-  ['username', 'email', 'password', 'loginButton'].forEach((id) => {
-    const input = document.getElementById(id);
-    if (!input) return;
-    input.addEventListener('focus', activateHeartsMobile);
-    input.addEventListener('click', activateHeartsMobile);
-  });
-}
+  console.log('Mobile branch active:', isMobile);
+  if (isMobile) {
+    ['username', 'email', 'password', 'loginButton'].forEach((id) => {
+      const input = document.getElementById(id);
+      console.log('Hooking input:', id, '=>', !!input);
+      if (!input) return;
+      input.addEventListener('focus', activateHeartsMobile);
+      input.addEventListener('click', activateHeartsMobile);
+    });
+  }
+
+  // Initialize eyes
+  if (!leftEye || !rightEye) {
+    resetEyes();
+  }
+
+  console.log('Interaction script initialized.');
+}); // <-- this closing brace was missing before
