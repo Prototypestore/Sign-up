@@ -157,10 +157,15 @@ body::before {
 }
 
 .container {
+  display: flex;            /* ✅ ensures children respect layout */
   flex-direction: column;   /* stack hero + form vertically */
   gap: 30px;
   padding: 25px;
   height: auto;             /* let content flow naturally */
+  align-items: center;      /* center horizontally */
+  gap: 30px;
+  width: 100%;              /* take full width */
+  box-sizing: border-box;   /* include padding in width */
 }
 
 .hero {
@@ -176,17 +181,17 @@ svg {
   margin: 0 auto;
 }
 
-form {
-  width: 90%;
+  form {
+  width: 100%;              /* stretch to container width */
   max-width: 360px;
-  margin: 0 auto;
-  margin-right: 10px; /* ✅ extra space on the right side */
+  margin: 0 auto;           /* center horizontally */
   padding: 20px;
   border-radius: 12px;
-  background: rgba(255,255,255,0.08); /* subtle card */
+  background: rgba(255,255,255,0.08);
   display: flex;
   flex-direction: column;
   gap: 16px;
+  box-sizing: border-box;   /* ✅ prevents padding from overflowing */
 }
 
 .form-group {
@@ -210,6 +215,7 @@ form {
   border-radius: 6px;
   background-color: #ffffff; /* white box */
   color: #000000;            /* black text */
+  box-sizing: border-box;   /* ✅ ensures padding doesn’t overflow */
 }
 
 .form-group input:focus {
