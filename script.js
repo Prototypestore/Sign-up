@@ -114,18 +114,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Mobile logic
   const isMobile = window.matchMedia('(max-width: 767px)').matches;
-  if (isMobile) {
-    ['username', 'email', 'password', 'loginButton'].forEach((id) => {
-      const input = document.getElementById(id);
-      if (!input) return;
-      input.addEventListener('focus', activateHeartsMobile);
-      input.addEventListener('click', activateHeartsMobile);
-    });
-  }
-
-  if (!leftEye || !rightEye) {
-    resetEyes();
-  }
-
-  console.log('Interaction script initialized.');
-});
+if (isMobile) {
+  ['username', 'email', 'password', 'loginButton'].forEach((id) => {
+    const input = document.getElementById(id);
+    if (!input) return;
+    input.addEventListener('focus', activateHeartsMobile);
+    input.addEventListener('click', activateHeartsMobile);
+  });
+}
