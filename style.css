@@ -5,12 +5,24 @@ body {
   margin: 0;
 }
 
+/* Overlay for readability */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: -1;
+}
+
 .container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   gap: 50px;
+  flex-direction: column;
+  padding: 25px;
+  box-sizing: border-box;
 }
 
 .logo {
@@ -25,54 +37,6 @@ body {
   gap: 20px;
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
-  width: 100%;
-}
-
-.form-group label {
-  font-size: 14px;
-  font-weight: 600;
-  color: #ffffff;   /* pure white for dark background */
-  margin-bottom: 6px;
-  position: static; /* sits above input */
-  opacity: 1;
-}
-
-.form-group input {
-  width: 100%;
-  padding: 12px;
-  font-size: 16px;
-  border: 1px solid #444;   /* darker border for contrast */
-  border-radius: 6px;
-  background-color: #ffffff !important; /* white box */
-  color: #000000 !important;            /* black text */
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.form-group input:focus {
-  border-color: #007FFF;
-  box-shadow: 0 0 6px rgba(0,127,255,0.4);
-  outline: none;
-}
-
-#loginButton {
-  width: 120px;
-  height: 35px;
-  background-color: #007FFF;
-  font-size: 16px;
-  text-align: center;
-  color: white;
-  cursor: pointer;
-  border-radius: 6px;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .hero {
   display: flex;
   flex-direction: column;
@@ -82,9 +46,7 @@ body {
   margin: 30px;
   font-size: 16px;
   line-height: 2px;
-  border: none;
 }
-
 .hero h1 {
   color: cyan;
   font-family: 'Georgia', sans-serif;
@@ -93,138 +55,53 @@ body {
 svg {
   margin: 30px;
   border: none;
-}
-
-input {
-  width: 300px;
-  padding: 5px;
-  margin: 10px 0;
-  border-radius: 7px;
-  border: 1px solid #ccc;
-}
-
-/* Eye animations */
-.eye {
-  transition: transform 0.3s ease, fill 0.3s ease;
-  transform-origin: center; /* ensures wiggle/bounce pivot correctly */
-}
-
-.bounce {
-  animation: bounce 0.6s ease;
-}
-
-@keyframes bounce {
-  0%   { transform: scale(1); }
-  30%  { transform: scale(1.3); }
-  60%  { transform: scale(0.9); }
-  100% { transform: scale(1); }
-}
-
-/* Ear animations */
-.ear {
-  transition: transform 0.3s ease;
-  transform-origin: center;
-}
-
-.ear.wiggle {
-  animation: wiggle 0.5s ease;
-}
-
-@keyframes wiggle {
-  0%   { transform: rotate(-10deg); }
-  50%  { transform: rotate(10deg); }
-  100% { transform: rotate(0deg); }
-}
-
-/* =========================
-   MOBILE LAYOUT (default for ALL screens)
-   ========================= */
-body {
-  background: url('https://static.vecteezy.com/system/resources/previews/042/703/456/non_2x/abstract-technology-particles-lines-background-free-vector.jpg')
-              no-repeat center center fixed;
-  background-size: cover;
-  font-family: 'Inter', sans-serif;
-  margin: 0;
-}
-
-/* Overlay for readability */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.55); /* dark overlay */
-  z-index: -1;
-}
-
-.container {
-  display: flex;            
-  flex-direction: column;   
-  gap: 30px;
-  padding: 25px;
-  height: auto;             
-  align-items: center;      
-  width: 100%;              
-  box-sizing: border-box;   
-}
-
-.hero {
-  text-align: center;
-  color: white;
-  margin: 10px 0;
-}
-
-svg {
   width: 180px;
   height: auto;
   display: block;
   margin: 0 auto;
 }
 
+/* Ensure transforms work inside SVG */
+svg * {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
 form {
-  width: 100%;              
+  width: 100%;
   max-width: 360px;
-  margin: 0 auto;           
+  margin: 0 auto;
   padding: 20px;
   border-radius: 12px;
   background: rgba(255,255,255,0.08);
   display: flex;
   flex-direction: column;
   gap: 16px;
-  box-sizing: border-box;   
-}
-
-/* ✅ Add safe breathing room on mobile */
-@media only screen and (max-width: 599px) {
-  form {
-    margin-left: 15px;
-    margin-right: 15px;
-  }
+  box-sizing: border-box;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
+  margin-bottom: 20px;
   width: 100%;
 }
-
 .form-group label {
   font-size: 14px;
   font-weight: 600;
   color: #ffffff;
   margin-bottom: 6px;
 }
-
 .form-group input {
   width: 100%;
   padding: 12px;
   font-size: 16px;
   border: 1px solid #444;
   border-radius: 6px;
-  background-color: #ffffff; 
-  color: #000000;            
-  box-sizing: border-box;   
+  background-color: #ffffff;
+  color: #000000;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
-
 .form-group input:focus {
   border-color: #007FFF;
   box-shadow: 0 0 6px rgba(0,127,255,0.4);
@@ -241,26 +118,34 @@ form {
   border-radius: 6px;
   cursor: pointer;
   transition: transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-
 #loginButton:hover {
   transform: scale(1.05);
 }
 
-/* Mobile animations */
+/* =========================
+   Animations
+   ========================= */
+
+/* Eyes */
 .eye {
   transition: transform 0.3s ease, fill 0.3s ease;
 }
-
-.wiggle {
-  animation: wiggle 0.5s ease;
-}
-
 .bounce {
   animation: bounce 0.6s ease;
 }
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
 
-/* Wiggle animation */
+/* Ears */
+.wiggle {
+  animation: wiggle 0.5s ease;
+}
 @keyframes wiggle {
   0%   { transform: rotate(0deg); }
   25%  { transform: rotate(5deg); }
@@ -269,107 +154,42 @@ form {
   100% { transform: rotate(0deg); }
 }
 
-/* Bounce animation */
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-8px); }
+/* =========================
+   Responsive Layouts
+   ========================= */
+
+/* Small phones */
+@media only screen and (max-width: 599px) {
+  form { margin-left: 15px; margin-right: 15px; }
 }
 
-/* =========================
-   Tablet screens (≥ 600px)
-   ========================= */
+/* Tablet (≥600px) */
 @media only screen and (min-width: 600px) {
-  .container {
-    flex-direction: row;   
-    gap: 40px;
-    padding: 30px;
-  }
-
-  svg {
-    width: 250px;
-  }
-
-  .eye {
-    font-size: 20px;
-  }
-
-  #leftEye, #rightEye {
-    rx: 11;
-    ry: 15;
-  }
-
-  form {
-    max-width: 400px;
-    padding: 25px;
-  }
+  .container { flex-direction: row; gap: 40px; padding: 30px; }
+  svg { width: 250px; }
+  .eye { font-size: 20px; }
+  #leftEye, #rightEye { rx: 11; ry: 15; }
+  form { max-width: 400px; padding: 25px; }
 }
 
-/* =========================
-   Desktop screens (≥ 768px)
-   ========================= */
+/* Desktop (≥768px) */
 @media only screen and (min-width: 768px) {
-  .container {
-    gap: 60px;
-  }
-
-  svg {
-    width: 300px;
-  }
-
-  .eye {
-    font-size: 22px;
-  }
-
-  #leftEye, #rightEye {
-    rx: 12;
-    ry: 16;
-  }
-
-  .wiggle {
-    animation: wiggle 0.6s ease-in-out;
-  }
-
-  .bounce {
-    animation: bounce 0.8s ease-in-out;
-  }
-
-  form {
-    max-width: 450px;
-    padding: 30px;
-  }
+  .container { gap: 60px; }
+  svg { width: 300px; }
+  .eye { font-size: 22px; }
+  #leftEye, #rightEye { rx: 12; ry: 16; }
+  .wiggle { animation: wiggle 0.6s ease-in-out; }
+  .bounce { animation: bounce 0.8s ease-in-out; }
+  form { max-width: 450px; padding: 30px; }
 }
 
-/* =========================
-   Large screens (≥ 1200px)
-   ========================= */
+/* Large screens (≥1200px) */
 @media only screen and (min-width: 1200px) {
-  .container {
-    gap: 80px;
-  }
-
-  svg {
-    width: 400px;
-  }
-
-  .eye {
-    font-size: 24px;
-  }
-
-  #leftEye, #rightEye {
-    rx: 14;
-    ry: 18;
-  }
-
-  .wiggle {
-    animation: wiggle 0.7s ease-in-out;
-  }
-
-  .bounce {
-    animation: bounce 1s ease-in-out;
-  }
-
-  form {
-    max-width: 500px;
-    padding: 40px;
-  }
+  .container { gap: 80px; }
+  svg { width: 400px; }
+  .eye { font-size: 24px; }
+  #leftEye, #rightEye { rx: 14; ry: 18; }
+  .wiggle { animation: wiggle 0.7s ease-in-out; }
+  .bounce { animation: bounce 1s ease-in-out; }
+  form { max-width: 500px; padding: 40px; }
 }
