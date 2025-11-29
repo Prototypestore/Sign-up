@@ -194,6 +194,14 @@ svg {
   box-sizing: border-box;   /* ✅ prevents padding from overflowing */
 }
 
+/* ✅ Add safe breathing room on mobile */
+@media only screen and (max-width: 599px) {
+  form {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+}
+
 .form-group {
   display: flex;
   flex-direction: column;
