@@ -180,6 +180,7 @@ form {
   width: 90%;
   max-width: 360px;
   margin: 0 auto;
+  margin-right: 10px; /* ✅ extra space on the right side */
   padding: 20px;
   border-radius: 12px;
   background: rgba(255,255,255,0.08); /* subtle card */
