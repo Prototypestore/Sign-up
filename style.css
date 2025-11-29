@@ -67,6 +67,12 @@ svg * {
   transform-origin: center;
 }
 
+/* Explicitly target ears for wiggle */
+#leftEarOuter, #rightEarOuter {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
 form {
   width: 100%;
   max-width: 360px;
@@ -144,13 +150,13 @@ form {
 
 /* Ears */
 .wiggle {
-  animation: wiggle 0.5s ease;
+  animation: wiggle 0.6s ease-in-out;
 }
 @keyframes wiggle {
   0%   { transform: rotate(0deg); }
-  25%  { transform: rotate(5deg); }
-  50%  { transform: rotate(-5deg); }
-  75%  { transform: rotate(5deg); }
+  25%  { transform: rotate(8deg); }
+  50%  { transform: rotate(-8deg); }
+  75%  { transform: rotate(8deg); }
   100% { transform: rotate(0deg); }
 }
 
@@ -178,7 +184,7 @@ form {
   svg { width: 300px; }
   .eye { font-size: 22px; }
   #leftEye, #rightEye { rx: 12; ry: 16; }
-  .wiggle { animation: wiggle 0.6s ease-in-out; }
+  .wiggle { animation: wiggle 0.7s ease-in-out; }
   .bounce { animation: bounce 0.8s ease-in-out; }
   form { max-width: 450px; padding: 30px; }
 }
@@ -189,7 +195,7 @@ form {
   svg { width: 400px; }
   .eye { font-size: 24px; }
   #leftEye, #rightEye { rx: 14; ry: 18; }
-  .wiggle { animation: wiggle 0.7s ease-in-out; }
+  .wiggle { animation: wiggle 0.8s ease-in-out; }
   .bounce { animation: bounce 1s ease-in-out; }
   form { max-width: 500px; padding: 40px; }
 }
