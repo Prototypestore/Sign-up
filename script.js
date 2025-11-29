@@ -12,11 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  // Obtain eyes (ellipse initially)
+  // Eyes (must exist in SVG with class="eye")
   let leftEye = document.getElementById('leftEye');
   let rightEye = document.getElementById('rightEye');
 
-  // SVG namespace helper
   const SVG_NS = 'http://www.w3.org/2000/svg';
 
   // Create a black ellipse eye
@@ -44,12 +43,16 @@ document.addEventListener('DOMContentLoaded', () => {
     return t;
   }
 
-  // Reset eyes to neutral black ellipses
+  // Reset eyes to neutral black ellipses (and clear transforms)
   function resetEyes() {
-    leftEye = createEllipseEye(80, 90, 'left');
-    rightEye = createEllipseEye(120, 90, 'right');
-    face.querySelector('#leftEye')?.replaceWith(leftEye);
-    face.querySelector('#rightEye')?.replaceWith(rightEye);
+    const left = createEllipseEye(80, 90, 'left');
+    const right = createEllipseEye(120, 90, 'right');
+    face.querySelector('#leftEye')?.replaceWith(left);
+    face.querySelector('#rightEye')?.replaceWith(right);
+    leftEye = left;
+    rightEye = right;
+    leftEye.removeAttribute('transform');
+    rightEye.removeAttribute('transform');
   }
 
   // Wiggle ears briefly
@@ -74,18 +77,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Switch eyes to hearts + wiggle
   function activateHearts() {
-    leftEye = createHeartEye(75, 95, 'left');
-    rightEye = createHeartEye(115, 95, 'right');
-    face.querySelector('#leftEye')?.replaceWith(leftEye);
-    face.querySelector('#rightEye')?.replaceWith(rightEye);
+    const left = createHeartEye(75, 95, 'left');
+    const right = createHeartEye(115, 95, 'right');
+    face.querySelector('#leftEye')?.replaceWith(left);
+    face.querySelector('#rightEye')?.replaceWith(right);
+    leftEye = left;
+    rightEye = right;
+    // Clear any previous transform so bounce is centered
+    leftEye.removeAttribute('transform');
+    rightEye.removeAttribute('transform');
     wiggleEars();
     bounceHearts();
   }
 
-  // Constant cursor tracking (desktop only)
+  // Desktop cursor tracking (transform-based)
   const isDesktop = window.matchMedia('(min-width: 768px)').matches;
   if (isDesktop) {
     document.addEventListener('mousemove', (e) => {
+      // Ensure references are fresh (in case eyes were replaced)
+      leftEye = document.getElementById('leftEye');
+      rightEye = document.getElementById('rightEye');
       if (!leftEye || !rightEye) return;
 
       const rect = face.getBoundingClientRect();
@@ -138,6 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('Interaction script initialized.');
 });
 
+/* 📱 Mobile (no cursor tracking, compact form) */
 @media only screen and (max-width: 767px) {
   svg {
     width: 200px;
@@ -146,11 +158,30 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   .eye {
-    transition: none; /* no cursor tracking on mobile */
+    transition: none; /* disable transitions on mobile */
   }
 
   form {
     max-width: 360px;
     padding: 20px;
+  }
+}
+
+/* 🖥️ Desktop (cursor tracking, smooth animations) */
+@media only screen and (min-width: 768px) {
+  svg {
+    width: 300px;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  .eye {
+    transition: transform 0.3s ease, fill 0.3s ease;
+    transform-origin: center; /* ensures smooth pivot for bounce/wiggle */
+  }
+
+  form {
+    max-width: 450px;
+    padding: 30px;
   }
 }
