@@ -57,15 +57,15 @@
     <form action="/submit-form" method="post">
       <div class="form-group">
       <label id="username" for="username">Username</label>
-      <input type="text" name="username" required>
+      <input id="username" type="text" name="username" required>
       </div>
       <div class="form-group">
       <label id="email" for="email">Email</label>
-      <input type="email" name="email" required>
+      <input id="email" type="email" name="email" required>
       </div>
       <div class="form-group">
       <label id="password" for="password">Password</label>
-      <input type="password" name="password" required>
+      <input id="password" type="password" name="password" required>
       </div>
       <button id="loginButton" type="submit">Login</button>
     </form>
@@ -77,14 +77,12 @@
   .eye { transition: none; }
   form { max-width: 360px; padding: 20px; }
 }
-
 /* Desktop */
 @media only screen and (min-width: 768px) {
   svg { width: 300px; height: auto; margin: 0 auto; }
   .eye { transition: transform 0.3s ease, fill 0.3s ease; transform-origin: center; }
   form { max-width: 450px; padding: 30px; }
 }
-
 /* Animations */
 .wiggle {
   animation: wiggle 1s ease;
@@ -96,7 +94,6 @@
   75% { transform: rotate(10deg); }
   100% { transform: rotate(0deg); }
 }
-
 .bounce {
   animation: bounce 1s ease;
 }
