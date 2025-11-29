@@ -12,26 +12,17 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  // Obtain eyes (may be ellipse initially)
+  // Obtain eyes (ellipse initially)
   let leftEye = document.getElementById('leftEye');
   let rightEye = document.getElementById('rightEye');
 
   // SVG namespace helper
   const SVG_NS = 'http://www.w3.org/2000/svg';
 
-  // Replace an eye node with a new node (safe in SVG)
-  function replaceEye(side, newNode) {
-    const current = side === 'left' ? leftEye : rightEye;
-    if (!current || !current.parentNode) return;
-    current.parentNode.replaceChild(newNode, current);
-    if (side === 'left') leftEye = newNode;
-    else rightEye = newNode;
-  }
-
-  // Create a black ellipse eye at given position
-  function createEllipseEye(cx, cy) {
+  // Create a black ellipse eye
+  function createEllipseEye(cx, cy, side) {
     const el = document.createElementNS(SVG_NS, 'ellipse');
-    el.setAttribute('id', el === leftEye ? 'leftEye' : 'rightEye'); // not reliable; set explicitly later
+    el.setAttribute('id', side === 'left' ? 'leftEye' : 'rightEye');
     el.setAttribute('class', 'eye');
     el.setAttribute('cx', cx);
     el.setAttribute('cy', cy);
@@ -42,8 +33,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Create a heart eye <text>
-  function createHeartEye(x, y) {
+  function createHeartEye(x, y, side) {
     const t = document.createElementNS(SVG_NS, 'text');
+    t.setAttribute('id', side === 'left' ? 'leftEye' : 'rightEye');
     t.setAttribute('class', 'eye');
     t.setAttribute('font-size', '20');
     t.setAttribute('x', x);
@@ -54,12 +46,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Reset eyes to neutral black ellipses
   function resetEyes() {
-    const left = createEllipseEye(80, 90);
-    left.setAttribute('id', 'leftEye');
-    const right = createEllipseEye(120, 90);
-    right.setAttribute('id', 'rightEye');
-    replaceEye('left', left);
-    replaceEye('right', right);
+    leftEye = createEllipseEye(80, 90, 'left');
+    rightEye = createEllipseEye(120, 90, 'right');
+    face.querySelector('#leftEye')?.replaceWith(leftEye);
+    face.querySelector('#rightEye')?.replaceWith(rightEye);
   }
 
   // Wiggle ears briefly
@@ -84,20 +74,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Switch eyes to hearts + wiggle
   function activateHearts() {
-    // Position hearts near original eye locations
-    const left = createHeartEye(75, 95);
-    left.setAttribute('id', 'leftEye');
-    const right = createHeartEye(115, 95);
-    right.setAttribute('id', 'rightEye');
-
-    replaceEye('left', left);
-    replaceEye('right', right);
-
+    leftEye = createHeartEye(75, 95, 'left');
+    rightEye = createHeartEye(115, 95, 'right');
+    face.querySelector('#leftEye')?.replaceWith(leftEye);
+    face.querySelector('#rightEye')?.replaceWith(rightEye);
     wiggleEars();
     bounceHearts();
   }
 
-  // Constant cursor tracking
+  // Constant cursor tracking (desktop only)
   const isDesktop = window.matchMedia('(min-width: 768px)').matches;
   if (isDesktop) {
     document.addEventListener('mousemove', (e) => {
@@ -123,13 +108,9 @@ document.addEventListener('DOMContentLoaded', () => {
           activateHearts();
         }
       } else {
-        // Eyes track cursor normally outside form
-        const left = createEllipseEye(80 + dx, 90 + dy);
-        left.setAttribute('id', 'leftEye');
-        const right = createEllipseEye(120 + dx, 90 + dy);
-        right.setAttribute('id', 'rightEye');
-        replaceEye('left', left);
-        replaceEye('right', right);
+        // Eyes track cursor smoothly using transform
+        leftEye.setAttribute('transform', `translate(${dx}, ${dy})`);
+        rightEye.setAttribute('transform', `translate(${dx}, ${dy})`);
       }
     });
   }
@@ -142,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
     input.addEventListener('blur', resetEyes);
   });
 
-  // Login button listeners (single declaration, no duplicates)
+  // Login button listeners
   const loginButton = document.getElementById('loginButton');
   if (loginButton) {
     loginButton.addEventListener('focus', activateHearts);
@@ -157,3 +138,19 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('Interaction script initialized.');
 });
 
+@media only screen and (max-width: 767px) {
+  svg {
+    width: 200px;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  .eye {
+    transition: none; /* no cursor tracking on mobile */
+  }
+
+  form {
+    max-width: 360px;
+    padding: 20px;
+  }
+}
