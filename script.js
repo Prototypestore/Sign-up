@@ -157,19 +157,3 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('Interaction script initialized.');
 });
 
-@media only screen and (max-width: 767px) {
-  svg {
-    width: 200px;
-    height: auto;
-    margin: 0 auto;
-  }
-
-  .eye {
-    transition: none; /* no cursor tracking on mobile */
-  }
-
-  form {
-    max-width: 360px;
-    padding: 20px;
-  }
-}
