@@ -156,3 +156,53 @@ document.addEventListener('DOMContentLoaded', () => {
 
   console.log('Interaction script initialized.');
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  // ✅ Detect if the device is mobile/touch
+  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+  if (isTouchDevice) {
+    // === MOBILE-ONLY CODE STARTS HERE ===
+
+    const loginForm = document.querySelector("form");
+    const leftEye = document.getElementById("leftEye");
+    const rightEye = document.getElementById("rightEye");
+    const eyes = document.querySelectorAll(".eye");
+    const leftEar = document.getElementById("leftEar");
+    const rightEar = document.getElementById("rightEar");
+
+    // Forward positions (adjust to match your SVG neutral eye coordinates)
+    const forwardLX = 50; 
+    const forwardLY = 50;
+    const forwardRX = 80;
+    const forwardRY = 50;
+
+    // Reset eyes to forward position
+    function resetEyesForward() {
+      leftEye.setAttribute("cx", forwardLX);
+      leftEye.setAttribute("cy", forwardLY);
+      rightEye.setAttribute("cx", forwardRX);
+      rightEye.setAttribute("cy", forwardRY);
+
+      eyes.forEach(e => e.classList.remove("bounce"));
+      leftEar.classList.remove("wiggle");
+      rightEar.classList.remove("wiggle");
+    }
+
+    // Activate hearts + wiggle when form is focused
+    function activateHeartsMobile() {
+      eyes.forEach(e => e.classList.add("bounce"));
+      leftEar.classList.add("wiggle");
+      rightEar.classList.add("wiggle");
+    }
+
+    // Listen for focus events on the form (mobile tap)
+    loginForm.addEventListener("focusin", activateHeartsMobile);
+    loginForm.addEventListener("focusout", resetEyesForward);
+
+    // Initialize eyes facing forward on page load
+    resetEyesForward();
+
+    // === MOBILE-ONLY CODE ENDS HERE ===
+  }
+});
