@@ -105,7 +105,6 @@ input {
 
 .eye {
  transition: transform 0.2s ease;
- transform-origin: center;
 }
 
 .bounce {
@@ -251,7 +250,7 @@ svg {
 
 /* Mobile animations */
 .eye {
-  transition: transform 0.3s ease, fill 0.3s ease;
+  transform-origin: center;
 }
 
 .wiggle {
